@@ -5,10 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.os.Handler;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -19,11 +20,6 @@ public class Juego extends AppCompatActivity
 
     //Modo De Juego
     boolean btnElegido;
-
-    //Juego 2 jugadores
-    TextView TurnoTexto;
-    TextView TurnoQuien;
-    int JugadorSig;
 
     //Empieza el juego
     TextView resultado;
@@ -40,12 +36,14 @@ public class Juego extends AppCompatActivity
     int[] posGanadora=new int[]{-1, -1, -1}; //inicializamos
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_juego);
 
         btnSalir=findViewById(R.id.buttonSalir);
-        btnSalir.setOnClickListener(new View.OnClickListener() {
+        btnSalir.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
                 finish();
@@ -53,11 +51,6 @@ public class Juego extends AppCompatActivity
         });
 
         btnElegido=getIntent().getBooleanExtra("Eleccion", btnElegido);
-
-        TurnoTexto=(TextView) findViewById(R.id.textViewTurno);
-        TurnoTexto.setVisibility(View.INVISIBLE);
-        TurnoQuien=(TextView) findViewById(R.id.textViewTurnoQuien);
-        TurnoQuien.setVisibility(View.INVISIBLE);
 
         resultado=(TextView) findViewById(R.id.textViewRtado);
         resultado.setVisibility(View.INVISIBLE);
@@ -70,12 +63,13 @@ public class Juego extends AppCompatActivity
 
     }
 
-    public void marcarCasillero(View v){
+    public void marcarCasillero(View v) throws InterruptedException {
         if(seguirJugando == 0){
             if(btnElegido == false){
                 turno = 1;}
             int numBoton= Arrays.asList(botones).indexOf(v.getId());
-            if(tablero[numBoton] == 0){ //comprueba que no pongamos fichas en donde ya hay
+            if(tablero[numBoton] == 0)
+            { //comprueba que no pongamos fichas en donde ya hay
                 if(btnElegido == false)
                 { //1 jugador
                     v.setBackgroundResource(R.drawable.marcax);
@@ -93,11 +87,13 @@ public class Juego extends AppCompatActivity
                         terminoPartida();
                     }
                 }
+
             }
         }
+
     }
 
-    public void maquina(){
+    public void maquina() {
 
         int pos=dosEnRaya();
 
@@ -114,6 +110,7 @@ public class Juego extends AppCompatActivity
         Button b=(Button) findViewById(botones[pos]);
         b.setBackgroundResource(R.drawable.marcao);
         tablero[pos]=-1;
+
     }
 
 
@@ -245,10 +242,9 @@ public class Juego extends AppCompatActivity
     public void terminoPartida(){
         int fichaGanadora = R.drawable.marcaganox;
         if(seguirJugando == 1 || seguirJugando == -1){ //si ganó o perdió
-            TurnoTexto.setVisibility(View.INVISIBLE);
-            TurnoQuien.setVisibility(View.INVISIBLE);
             if(seguirJugando == 1){ //si ganó
                 resultado.setVisibility(View.VISIBLE);
+                resultado.setText("Ganaste!");
                 resultado.setTextColor(Color.rgb(173,201,101));
 
 
@@ -267,11 +263,9 @@ public class Juego extends AppCompatActivity
         }
         else{
             if(seguirJugando == 2){
-                TurnoTexto.setVisibility(View.INVISIBLE);
-                TurnoQuien.setVisibility(View.INVISIBLE);
                 resultado.setVisibility(View.VISIBLE);
                 resultado.setText("¡Empate!");
-                resultado.setTextColor(Color.rgb(0,5,6));
+                resultado.setTextColor(Color.rgb(255,255,255));
             }
         }
     }
