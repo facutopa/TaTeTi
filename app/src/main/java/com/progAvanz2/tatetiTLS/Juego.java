@@ -108,7 +108,13 @@ public class Juego extends AppCompatActivity
         }
         //posiciona en la posición random o directamente no entró al if xq sí había encontrado un 2 en raya (en ese caso usa esa posición)
         Button b=(Button) findViewById(botones[pos]);
-        b.setBackgroundResource(R.drawable.marcao);
+        new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                new Runnable() {
+                    public void run() {
+                        b.setBackgroundResource(R.drawable.marcao);
+                    }
+                },
+                500);
         tablero[pos]=-1;
 
     }
